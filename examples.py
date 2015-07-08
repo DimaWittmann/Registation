@@ -18,7 +18,7 @@ def fetch_data(url, params, method):
 
 
 url = 'https://flask-registration.herokuapp.com/api/users'
-url = 'http://localhost:5000/api/users'
+
 
 
 

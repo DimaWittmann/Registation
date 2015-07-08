@@ -15,19 +15,19 @@ class BaseTestCase(unittest.TestCase):
         self.app = app.test_client()
         db.create_all()
 
-        user = models.User(email="a@gmail.com", password="1111", other="")
+        user = models.User(email="a@gmail.com", password="11111111", other="")
         db.session.add(user)
         db.session.commit()
 
-        user = models.User(email="f@gmail.com", password="1111", other="")
+        user = models.User(email="f@gmail.com", password="11111111", other="")
         db.session.add(user)
         db.session.commit()
 
-        user = models.User(email="x@gmail.com", password="1111", other="")
+        user = models.User(email="x@gmail.com", password="11111111", other="")
         db.session.add(user)
         db.session.commit()
 
-        user = models.User(email="b@gmail.com", password="1111", other="")
+        user = models.User(email="b@gmail.com", password="11111111", other="")
         db.session.add(user)
         db.session.commit()
 
@@ -71,7 +71,7 @@ class ApiTest(BaseTestCase):
         """
         new_user = json.dumps({
             'email': 'd@gmail.com',
-            'password': '1234'
+            'password': '12321332144'
         })
         number_of_users = models.User.query.count()
 
@@ -123,7 +123,7 @@ class RegistrationPageTest(BaseTestCase):
     def test_message_when_user_registered(self):
         response = self.app.post('/', data={
             'email': 'v@gmail.com',
-            'password': '4321'
+            'password': '432121'
         }).data.decode('utf-8')
         self.assertIn('New user has been registered', response)
 
@@ -137,14 +137,14 @@ class RegistrationPageTest(BaseTestCase):
     def test_error_messages_when_empty_email(self):
         response = self.app.post('/', data={
             'email': '',
-            'password': '1212'
+            'password': '1213223232'
         }).data.decode('utf-8')
         self.assertIn('Email is required', response)
 
     def test_error_messages_when_user_email_isnt_unique(self):
         response = self.app.post('/', data={
             'email': 'a@gmail.com',
-            'password': '123'
+            'password': '12312232'
         }).data.decode('utf-8')
         self.assertIn('Email already registered', response)
 
