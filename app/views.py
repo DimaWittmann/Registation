@@ -1,7 +1,6 @@
 
-from flask import render_template, flash, make_response, jsonify, request, abort
+from flask import render_template, flash, make_response, jsonify, request
 from sqlalchemy import desc
-from sqlalchemy.exc import IntegrityError
 
 from app import forms, models, app, db
 
@@ -25,12 +24,11 @@ def registration():
     return render_template('registration.html', form=form)
 
 
-
 @app.route('/api/users', methods=['POST'])
 def register_new_user():
     if not request.json:
-        abort(400)
-    form = forms.RegistrationForm()
+        return make_response(jsonify({'error': 'application/json expected'}), 400)
+    form = forms.RegistrationForm(csrf_enabled=False)
     form.email = request.json.get('email')
     form.password = request.json.get('password')
     form.other = request.json.get('other')
@@ -48,10 +46,6 @@ def register_new_user():
         return make_response(jsonify(form.errors), 400)
 
 
-
-
-
-
 @app.route('/api/users', methods=['GET'])
 def get_users():
     users = models.User.query
@@ -59,7 +53,7 @@ def get_users():
 
     if sort:
         desc_order = False
-        if sort[0] == "-":
+        if sort[0] == "-":  # - means desc order e.g. '-date'
             sort = sort[1:]
             desc_order = True
 
@@ -79,15 +73,10 @@ def get_users():
     return jsonify({'users': response})
 
 
-
-
-
-@app.route('/api/users/<int:id>', methods=['GET'])
-def get_user(id):
-    user = models.User.query.get(id)
+@app.route('/api/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = models.User.query.get(user_id)
     if not user:
         return make_response(jsonify({'error': 'User not found'}), 404)
 
     return jsonify({'user': user.serialize()})
-
-

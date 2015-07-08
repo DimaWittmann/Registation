@@ -1,9 +1,10 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import DataRequired, Email
 from wtforms import ValidationError
 
 from app.models import User
+
 
 class RegistrationForm(Form):
 

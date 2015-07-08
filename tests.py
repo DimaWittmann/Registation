@@ -99,7 +99,7 @@ class ApiTest(BaseTestCase):
         self.assertEqual(response._status_code, 400)
         self.assertEqual(number_of_users, models.User.query.count())
 
-        response = response.data.decode('utf-8')
+        response = json.loads(response.data.decode('utf-8'))
         self.assertEqual(response['email'], ['Email is required'])
         self.assertEqual(response['password'], ['Password is required'])
 
